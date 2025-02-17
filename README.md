@@ -28,7 +28,7 @@ To run the script, make sure you have the following Python libraries installed:
    pip install pywhatkit pyautogui pyperclip
 4. Run the script using Python:
    ```bash
-    python whatsapp_daily_reminder.py
+    python main.py
 5. The script will wait until the scheduled time (e.g., 7:00 PM) and then send the reminder message to the WhatsApp group.
 6. After the message is sent, the script will wait for 24 hours before sending the next reminder.
 
