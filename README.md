@@ -37,7 +37,7 @@ You can install these dependencies using the following command:
 6. After the message is sent, the script will wait for 24 hours before sending the next reminder.
 
 ### Example Message
-    ```text
+    ```
       🌟 *PENGINGAT HARIANMU!* 🏡✨
       
       🔔 Waktu untuk bersiap pulang, tetapi sebelum itu, periksa beberapa hal penting berikut:
@@ -51,9 +51,9 @@ You can install these dependencies using the following command:
       _"Discipline is management action to enforce organization standards"_ — Keith Davis
       
       Terima kasih atas kerja kerasmu hari ini. Sampai jumpa besok dengan semangat yang baru! 💪😊
-    ```
+    
     
 ### Client
-```
-Badan Pusat Statistik Kabupaten Bulungan
-```
+    ```
+    Badan Pusat Statistik Kabupaten Bulungan
+
