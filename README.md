@@ -37,7 +37,7 @@ You can install these dependencies using the following command:
 6. After the message is sent, the script will wait for 24 hours before sending the next reminder.
 
 ### Example Message
-    ```
+    
       🌟 *PENGINGAT HARIANMU!* 🏡✨
       
       🔔 Waktu untuk bersiap pulang, tetapi sebelum itu, periksa beberapa hal penting berikut:
@@ -54,6 +54,6 @@ You can install these dependencies using the following command:
     
     
 ### Client
-    ```
+    
     Badan Pusat Statistik Kabupaten Bulungan
 
