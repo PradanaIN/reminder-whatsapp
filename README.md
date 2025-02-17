@@ -10,10 +10,6 @@ To run the script, make sure you have the following Python libraries installed:
 - **`pyautogui`**: For automating keyboard actions.
 - **`pyperclip`**: For clipboard management.
 
-You can install these dependencies using the following command:
-    ```bash
-    pip install pywhatkit pyautogui pyperclip
-
 
 ### Features
 
