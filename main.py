@@ -1,27 +1,32 @@
 import datetime
-import time
+import pytz
 from timer import countdown_timer
-from whatsapp import send_whatsapp_message, copy_message_to_clipboard
-from config import message
+from sender import send_whatsapp_message, copy_message_to_clipboard
+from scheduler import scheduler  
+import asyncio  # Pastikan asyncio diimport
 
-def send_whatsapp_group_message():
+async def send_whatsapp_group_message():
     # Fungsi utama untuk mengirim pesan ke grup WhatsApp
     print("Mengirim pesan ke grup WhatsApp...")
-    current_time = datetime.datetime.now()
-    target_time = current_time.replace(hour=18, minute=34, second=0, microsecond=0)
+    current_time = datetime.datetime.now(pytz.timezone("Asia/Makassar"))
+    target_time = current_time.replace(hour=17, minute=45, second=0, microsecond=0)
 
-    countdown_timer(target_time)
+    await countdown_timer(target_time)  # Menunggu hingga waktu target tercapai
     
     copy_message_to_clipboard()
     send_whatsapp_message()
 
-def run_daily():
+async def run_daily():
     # Menjalankan pengiriman pesan harian secara terus-menerus
     while True:
-        send_whatsapp_group_message()
-        print("Pesan berhasil dikirim. Menunggu 24 jam hingga pengiriman pesan berikutnya...")
-        countdown_timer(datetime.datetime.now() + datetime.timedelta(days=1))
+        if scheduler():  # Memanggil fungsi scheduler untuk pengecekan
+            await send_whatsapp_group_message()  # Panggil fungsi async dengan await
+            print("Pesan berhasil dikirim. Menunggu 24 jam hingga pengiriman pesan berikutnya...")
+        else:
+            print("Pesan tidak dikirim hari ini. Menunggu 24 jam...")
+        
+        await countdown_timer(datetime.datetime.now() + datetime.timedelta(days=1))  # Tunggu selama 24 jam
 
 # Jalankan fungsi utama
 if __name__ == "__main__":
-    run_daily()
+    asyncio.run(run_daily())  # Menjalankan fungsi async dengan asyncio.run

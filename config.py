@@ -1,19 +1,7 @@
-# ID Grup WhatsApp
-group_id = "JpJNKT3hZZZGg5LSvWh9FT"
+from dotenv import load_dotenv
+import os
 
-# Pesan yang akan dikirimkan
-message = """
-🌟 *PENGINGAT HARIANMU!* 🏡✨
+load_dotenv()  # Memuat file .env
 
-🔔 Waktu untuk bersiap pulang, tetapi sebelum itu, periksa beberapa hal penting berikut:
-
-📝 *Absen Pulang*
-Jangan lupa untuk absen sebelum meninggalkan tempat kerja.
-
-⚡ *Periksa Perangkat Elektronik*
-Matikan semua perangkat yang tidak terpakai, seperti komputer, lampu, dan alat elektronik lainnya, untuk efisiensi energi.
-
-_"Discipline is management action to enforce organization standards"_ — Keith Davis
-
-Terima kasih atas kerja kerasmu hari ini. Sampai jumpa besok dengan semangat yang baru! 💪😊
-"""
+group_id = os.getenv("GROUP_ID")  # Mendapatkan variabel GROUP_ID
+message = os.getenv("MESSAGE")    # Mendapatkan variabel MESSAGE
