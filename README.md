@@ -55,22 +55,6 @@ To run the script, make sure you have the following Python libraries installed:
     python main.py
    ```
 
-### Example Message
-
-🌟*PENGINGAT HARIANMU!* 🏡
-
-🔔 Waktu untuk bersiap pulang, tetapi sebelum itu, periksa beberapa hal penting berikut:
-
-📝*Absen Pulang*
-Jangan lupa untuk absen sebelum meninggalkan tempat kerja.
-
-⚡*Periksa Perangkat Elektronik*
-Matikan semua perangkat yang tidak terpakai, seperti komputer, lampu, dan alat elektronik lainnya, untuk efisiensi energi.
-
-_"Discipline is management action to enforce organization standards"_ — Keith Davis
-
-Terima kasih atas kerja kerasmu hari ini. Sampai jumpa besok dengan semangat yang baru! 💪😊
-
 ### Client
 
     Badan Pusat Statistik Kabupaten Bulungan
