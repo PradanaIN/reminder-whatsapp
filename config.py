@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 
-load_dotenv()  # Memuat file .env
+load_dotenv()
 
-group_id = os.getenv("GROUP_ID")  # Mendapatkan variabel GROUP_ID
-message = os.getenv("MESSAGE")    # Mendapatkan variabel MESSAGE
+group_id = os.getenv("GROUP_ID", "DEFAULT_GROUP_ID")  # Fallback jika tidak ditemukan
+message = os.getenv("MESSAGE", "Pesan default jika tidak ada di .env")

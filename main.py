@@ -1,32 +1,46 @@
 import datetime
 import pytz
+import asyncio
 from timer import countdown_timer
-from sender import send_whatsapp_message, copy_message_to_clipboard
-from scheduler import scheduler  
-import asyncio  # Pastikan asyncio diimport
+from sender import send_messages_to_all
+from scheduler import scheduler
 
-async def send_whatsapp_group_message():
-    # Fungsi utama untuk mengirim pesan ke grup WhatsApp
-    print("Mengirim pesan ke grup WhatsApp...")
-    current_time = datetime.datetime.now(pytz.timezone("Asia/Makassar"))
-    target_time = current_time.replace(hour=17, minute=45, second=0, microsecond=0)
+# Zona waktu Asia/Makassar
+TIMEZONE = pytz.timezone("Asia/Makassar")
 
-    await countdown_timer(target_time)  # Menunggu hingga waktu target tercapai
-    
-    copy_message_to_clipboard()
-    send_whatsapp_message()
+async def send_whatsapp_messages():
+    print("Mengirim pesan ke kontak WhatsApp...")
+    send_messages_to_all()  # Kirim pesan ke semua kontak satu per satu
+    print("✅ Selesai mengirim semua pesan.")
 
 async def run_daily():
-    # Menjalankan pengiriman pesan harian secara terus-menerus
     while True:
-        if scheduler():  # Memanggil fungsi scheduler untuk pengecekan
-            await send_whatsapp_group_message()  # Panggil fungsi async dengan await
-            print("Pesan berhasil dikirim. Menunggu 24 jam hingga pengiriman pesan berikutnya...")
-        else:
-            print("Pesan tidak dikirim hari ini. Menunggu 24 jam...")
-        
-        await countdown_timer(datetime.datetime.now() + datetime.timedelta(days=1))  # Tunggu selama 24 jam
+        now = datetime.datetime.now(TIMEZONE)
+        weekday = now.weekday()  # Senin = 0, Selasa = 1, ..., Jumat = 4
 
-# Jalankan fungsi utama
+        if scheduler():  # Cek apakah hari ini adalah hari kerja
+            # Tentukan jam pengiriman berdasarkan hari
+            if weekday in [0, 1, 2, 3]:  # Senin - Kamis
+                target_time = now.replace(hour=15, minute=55, second=0, microsecond=0)
+            elif weekday == 4:  # Jumat
+                target_time = now.replace(hour=16, minute=30, second=30, microsecond=0)
+            else:
+                print("Hari ini bukan hari kerja. Tidak mengirim pesan.")
+                await asyncio.sleep(72000)  # Tunggu 20 jam sebelum memeriksa ulang
+                continue
+
+            # Tunggu sampai waktu pengiriman
+            await countdown_timer(target_time)
+            await send_whatsapp_messages()
+
+        else:
+            print("Hari ini bukan hari kerja. Tidak mengirim pesan.")
+
+        # Tambahkan log bahwa program masih berjalan
+        print("⏳ Program masih berjalan, menunggu proses berikutnya dalam 20 jam...")
+
+        # Tunggu hingga keesokan harinya sebelum menjalankan loop lagi
+        await asyncio.sleep(72000)  # Tunggu 20 jam sebelum mengirim pesan lagi
+
 if __name__ == "__main__":
-    asyncio.run(run_daily())  # Menjalankan fungsi async dengan asyncio.run
+    asyncio.run(run_daily())
