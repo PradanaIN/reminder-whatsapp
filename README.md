@@ -53,6 +53,7 @@ To run the script, make sure you have the following Python libraries installed:
    python main.py
    ```
 
+<<<<<<< HEAD
 ### Example Message
 
 ```
@@ -76,6 +77,8 @@ Terima kasih atas kerja kerasmu hari ini. Sampai jumpa besok dengan semangat yan
 - **Monday - Thursday** : Messages are sent at **15:55 WITA** .
 - **Friday** : Messages are sent at **16:25 WITA** .
 
+=======
+>>>>>>> 56665ad0505d691eede1a232faa4144846f006eb
 ### Client
 
 Badan Pusat Statistik Kabupaten Bulungan
