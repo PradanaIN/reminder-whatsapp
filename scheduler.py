@@ -14,7 +14,7 @@ CUTI_BERSAMA = {
     "2025-04-07", "2025-05-13", "2025-05-30", "2025-06-09", "2025-12-26"
 }
 
-def scheduler():
+async def scheduler():
     today_str = datetime.datetime.now().strftime("%Y-%m-%d")
     logger.info(f"Checking if today ({today_str}) is a workday.")
 

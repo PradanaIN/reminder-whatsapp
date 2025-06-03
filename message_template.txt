@@ -1,0 +1,16 @@
+Halo, selamat sore {name}!
+
+Sebelum meninggalkan tempat kerja, pastikan sudah memeriksa hal-hal berikut:
+
+✅ *Absen Pulang*
+Jangan lupa absen sebelum pulang, ya! 🏷️✅
+
+⚡ *Periksa Perangkat Elektronik*
+Pastikan komputer, lampu, dan perangkat lainnya sudah dimatikan untuk menghemat energi. 💡🔌
+
+> _"{quote}"_
+
+Terima kasih atas kerja kerasmu hari ini. Sampai jumpa besok dengan semangat yang baru! 💪😊
+
+---
+🤖 *Pesan ini dikirim otomatis melalui SIGAP (Sistem Pengingat Presensi)* 🤖

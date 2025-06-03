@@ -1,64 +1,68 @@
-import pywhatkit
-import pyautogui
-import pyperclip
-import time
+import os
 import json
-from config import message
+import requests
 from logger import setup_logger
-from quotes import get_random_quote  
+from quotes import get_random_quote
 
 logger = setup_logger("app_log")
 
-# Load daftar kontak dari file JSON
+ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
+PHONE_NUMBER_ID = os.getenv("PHONE_NUMBER_ID")
+
+# Muat template pesan dari file
+with open("message_template.txt", "r", encoding="utf-8") as f:
+    message_template = f.read()
+
 def load_contacts():
     try:
-        with open("contacts.json", "r") as file:
+        with open("contacts.json", "r", encoding="utf-8") as file:
             return json.load(file)
     except Exception as e:
-        logger.error(f"Error membaca kontak: {e}")
+        logger.error(f"❌ Gagal membaca file kontak: {e}")
         return []
 
-def send_whatsapp_message(number, name, first_time=False):
+def send_whatsapp_message(number: str, name: str):
     try:
-        quote = get_random_quote()  # 🔥 Ambil quote acak
-        full_message = message.format(quote=quote)  # 🔥 Sisipkan ke template
-        personalized_message = f"Halo, selamat sore {name}!\n\n" + full_message
-        pyperclip.copy(personalized_message)
+        name = name.strip() if name else "Pengguna"
+        quote = get_random_quote()
 
-        if first_time:
-            pywhatkit.sendwhatmsg_instantly(number, " ")
-            time.sleep(5)
+        # Masukkan nama dan quote ke dalam template
+        personalized_message = message_template.format(name=name, quote=quote)
+
+        url = f"https://graph.facebook.com/v18.0/{PHONE_NUMBER_ID}/messages"
+        headers = {
+            "Authorization": f"Bearer {ACCESS_TOKEN}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "messaging_product": "whatsapp",
+            "to": number,
+            "type": "text",
+            "text": {"body": personalized_message}
+        }
+
+        response = requests.post(url, headers=headers, json=payload)
+        print("Status:", response.status_code)
+        print("Response JSON:", response.json())
+
+        if response.status_code == 200:
+            logger.info(f"✅ Pesan berhasil dikirim ke {name} ({number})!")
         else:
-            pyautogui.hotkey("ctrl", "alt", "/")
-            time.sleep(1)
-            pyautogui.write(number)
-            time.sleep(1)
-            pyautogui.press("enter")
-            time.sleep(1)
+            logger.error(f"❌ Gagal mengirim pesan ke {name} ({number}): {response.status_code} - {response.text}")
 
-        pyautogui.hotkey("ctrl", "v")
-        time.sleep(1)
-        pyautogui.press("enter")
-        time.sleep(1)
-
-        logger.info(f"Pesan berhasil dikirim ke {name} ({number})!")
     except Exception as e:
-        logger.error(f"Terjadi kesalahan saat mengirim ke {name}: {e}")
-
-def close_whatsapp_tabs():
-    logger.info("Menutup tab WhatsApp Web...")
-    pyautogui.hotkey("ctrl", "w")  # Menutup tab saat ini
+        logger.error(f"⚠️ Terjadi kesalahan saat mengirim ke {name or number}: {e}")
 
 def send_messages_to_all():
     contacts = load_contacts()
     if not contacts:
-        logger.error("Tidak ada kontak yang ditemukan.")
+        logger.error("📭 Tidak ada kontak yang ditemukan.")
         return
 
-    first_time = True
     for contact in contacts:
-        send_whatsapp_message(contact["number"], contact["name"], first_time)
-        first_time = False  
-        time.sleep(1.5)  # Jeda singkat untuk menghindari spam
-
-    close_whatsapp_tabs()  # **Tutup WhatsApp Web setelah selesai**
+        number = contact.get("number")
+        name = contact.get("name", "Pengguna")
+        if number:
+            send_whatsapp_message(number, name)
+        else:
+            logger.warning(f"⚠️ Kontak tanpa nomor dilewati: {contact}")
